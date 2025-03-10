@@ -6,27 +6,11 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:37:10 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/10 15:17:39 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/10 17:36:29 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	*philo_routine(void *arg)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	while (philo->sim->all_alive)
-	{
-		// Think
-		// Take forks
-		// Eat
-		// Put forks
-		// Sleep
-	}
-	return (NULL);
-}
 
 int	parse_args(int argc, char **argv, t_sim *sim)
 {
@@ -60,16 +44,28 @@ int	parse_args(int argc, char **argv, t_sim *sim)
 int	main(int argc, char **argv)
 {
 	pthread_mutex_t	*forks;
-	struct timeval	start;
+	t_philo			*philos;
 	t_sim			sim;
 
 	if (!parse_args(argc, argv, &sim))
 		return (1);
-	sim.all_alive = 1;
 	forks = init_forks(&sim);
 	if (!forks)
 		return (1);
-	gettimeofday(&start, NULL);
-	free(forks);
+	philos = init_philos(&sim, forks);
+	if (!philos)
+	{
+		exit_sim(&sim, forks, NULL);
+		return (1);
+	}
+	sim.all_alive = 1;
+	if (pthread_mutex_init(&sim.all_alive_mutex, NULL))
+	{
+		printf("Error: mutex init failed\n");
+		exit_sim(&sim, forks, philos);
+		return (1);
+	}
+	run_sim(&sim, philos, forks);
+	pthread_mutex_destroy(&sim.all_alive_mutex);
 	return (0);
 }

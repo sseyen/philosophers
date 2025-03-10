@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:59 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/10 15:13:59 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:01:09 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_isnumber(char *str)
 	return (1);
 }
 
-int	get_timestamp(struct timeval *start)
+int	timestamp(struct timeval *start)
 {
 	struct timeval	now;
 	int				ms;
@@ -64,25 +64,17 @@ int	get_timestamp(struct timeval *start)
 	return (ms);
 }
 
-pthread_mutex_t	*init_forks(t_sim *sim)
+void	exit_sim(t_sim *sim, pthread_mutex_t *forks, t_philo *philos)
 {
-	int				i;
-	pthread_mutex_t	*forks;
+	int	i;
 
-	forks = malloc(sizeof(pthread_mutex_t) * sim->num_philo);
-	if (!forks)
-		printf("Error: failed to allocate memory for forks\n");
 	i = 0;
-	while (i < sim->num_philo)
+	if (forks)
 	{
-		if (pthread_mutex_init(&forks[i], NULL))
-		{
-			while (i >= 0)
-				pthread_mutex_destroy(&forks[i--]);
-			free(forks);
-			printf("Error: failed to initialize forks\n");
-		}
-		i++;
+		while (i < sim->num_philo)
+			pthread_mutex_destroy(&forks[i++]);
+		free(forks);
 	}
-	return (forks);
+	if (philos)
+		free(philos);
 }
