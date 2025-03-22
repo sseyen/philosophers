@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:37:03 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/10 18:00:45 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/22 19:44:20 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 typedef struct s_sim
 {
 	struct timeval	start;
-	pthread_mutex_t	all_alive_mutex;
-	int				all_alive;
+	pthread_mutex_t	state_mutex;
+	int				state;
 	int				num_philo;
 	int				time_to_die;
 	int				time_to_eat;

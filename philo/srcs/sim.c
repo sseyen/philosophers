@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:20:42 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/10 19:27:37 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/13 12:43:42 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,25 +55,16 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	printf("Philo %d is alive\n", philo->id);
 	while (philo->sim->all_alive && philo->meals != philo->sim->num_meals)
 	{
-		if (!eat(philo))
-		{
-			die(philo);
-			break ;
-		}
+		eat(philo);
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
 		gettimeofday(&philo->last_meal, NULL);
 		if (philo->sim->num_meals > 0)
 			philo->meals++;
-		if (philo->meals == philo->sim->num_meals || !philo->sim->all_alive)
-			break ;
 		printf("%d %d is sleeping\n", timestamp(&philo->sim->start), philo->id);
 		usleep(philo->sim->time_to_sleep * 1000);
-		if (philo->meals == philo->sim->num_meals || !philo->sim->all_alive)
-			break ;
 		printf("%d %d is thinking\n", timestamp(&philo->sim->start), philo->id);
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:07:52 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/10 17:30:11 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/22 20:03:17 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@ pthread_mutex_t	*init_forks(t_sim *sim)
 
 	forks = malloc(sizeof(pthread_mutex_t) * sim->num_philo);
 	if (!forks)
-		printf("Error: failed to allocate memory for forks\n");
+		return (printf("Error: malloc failed (forks)\n"), NULL);
 	i = 0;
 	while (i < sim->num_philo)
 	{
-		if (pthread_mutex_init(&forks[i], NULL))
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
 		{
 			while (i >= 0)
 				pthread_mutex_destroy(&forks[i--]);
 			free(forks);
-			printf("Error: failed to initialize forks\n");
+			forks = NULL;
+			return (printf("Error: failed to init forks\n"), NULL);
 		}
 		i++;
 	}
@@ -42,10 +43,7 @@ t_philo	*init_philos(t_sim *sim, pthread_mutex_t *forks)
 
 	philos = malloc(sizeof(t_philo) * sim->num_philo);
 	if (!philos)
-	{
-		printf("Error: malloc failed\n");
-		return (NULL);
-	}
+		return (printf("Error: malloc failed (philos)\n"), NULL);
 	i = 0;
 	while (i < sim->num_philo)
 	{
@@ -56,7 +54,6 @@ t_philo	*init_philos(t_sim *sim, pthread_mutex_t *forks)
 			philos[i].right_fork = &forks[sim->num_philo - 1];
 		else
 			philos[i].right_fork = &forks[i - 1];
-		philos[i].right_fork = &forks[(i + 1) % sim->num_philo];
 		philos[i].sim = sim;
 		i++;
 	}
