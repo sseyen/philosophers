@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:20:42 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/26 00:06:36 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/26 00:08:52 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	*philo_routine(void *arg)
 	{
 		if (!eat(philo))
 			return (die(philo), NULL);
-			philo->meals++;
+		philo->meals++;
 		if (philo->meals == philo->sim->num_meals)
 			break ;
 		if (timestamp(&philo->last_meal) > philo->sim->time_to_die || \
