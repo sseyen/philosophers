@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:37:10 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/22 20:13:42 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/25 23:28:37 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	parse_args(int argc, char **argv, t_sim *sim)
 
 int	main(int argc, char **argv)
 {
-	pthread_mutex_t	*forks;
 	t_philo			*philos;
+	t_fork			*forks;
 	t_sim			sim;
 
 	if (!parse_args(argc, argv, &sim))
@@ -46,11 +46,11 @@ int	main(int argc, char **argv)
 	philos = init_philos(&sim, forks);
 	if (!philos)
 		return (exit_sim(&sim, forks, NULL), 1);
-	sim.state = 1;
 	if (pthread_mutex_init(&sim.state_mutex, NULL))
 		return (printf("Error: mutex init failed\n"),
 			exit_sim(&sim, forks, philos), 1);
-	run_sim(&sim, philos, forks);
-	pthread_mutex_destroy(&sim.state_mutex);
+	sim.state = 0;
+	run_sim(&sim, philos);
+	exit_sim(&sim, forks, philos);
 	return (0);
 }

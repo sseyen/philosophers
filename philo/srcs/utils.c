@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:59 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/10 18:01:09 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/25 22:21:30 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	timestamp(struct timeval *start)
 	return (ms);
 }
 
-void	exit_sim(t_sim *sim, pthread_mutex_t *forks, t_philo *philos)
+void	exit_sim(t_sim *sim, t_fork *forks, t_philo *philos)
 {
 	int	i;
 
@@ -72,9 +72,11 @@ void	exit_sim(t_sim *sim, pthread_mutex_t *forks, t_philo *philos)
 	if (forks)
 	{
 		while (i < sim->num_philo)
-			pthread_mutex_destroy(&forks[i++]);
+			pthread_mutex_destroy(&forks[i++].mutex);
 		free(forks);
 	}
 	if (philos)
 		free(philos);
+	if (sim)
+		pthread_mutex_destroy(&sim->state_mutex);
 }
