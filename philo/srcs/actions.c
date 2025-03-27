@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 12:07:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/27 14:53:29 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/27 15:13:55 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,7 @@ void	pick_fork(t_philo *philo, t_fork *first, t_fork *second)
 
 void	eat(t_philo *philo)
 {
-	if (philo->id % 2)
-		pick_fork(philo, philo->left_fork, philo->right_fork);
-	else
-		pick_fork(philo, philo->right_fork, philo->left_fork);
+	pick_fork(philo, philo->left_fork, philo->right_fork);
 	if (!get_simstate(philo->sim))
 		return (put_fork(philo));
 	printf("%d %d has taken a fork\n", \
