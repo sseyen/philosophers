@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:37:03 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/25 22:55:08 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/27 10:41:19 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,13 @@ t_fork			*init_forks(t_sim *sim);
 t_philo			*init_philos(t_sim *sim, t_fork *forks);
 
 // Sim
-int				set_simstate(t_sim *sim, int state);
+void			set_simstate(t_sim *sim, int state);
 int				get_simstate(t_sim *sim);
 void			run_sim(t_sim *sim, t_philo *philos);
 
 // Actions
-void			die(t_philo *philo);
-int				pick_fork(t_philo *philo, t_fork *first, t_fork *second);
-int				eat(t_philo *philo);
+void			pick_fork(t_philo *philo, t_fork *first, t_fork *second);
+void			eat(t_philo *philo);
 
 // Fork
 int				get_forkstate(t_fork *fork);

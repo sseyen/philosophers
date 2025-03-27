@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:59 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/25 22:21:30 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/27 11:23:59 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,11 @@ void	exit_sim(t_sim *sim, t_fork *forks, t_philo *philos)
 	if (forks)
 	{
 		while (i < sim->num_philo)
-			pthread_mutex_destroy(&forks[i++].mutex);
+		{
+			pthread_mutex_destroy(&forks[i].mutex);
+			pthread_mutex_destroy(&forks[i].state_mutex);
+			i++;
+		}
 		free(forks);
 	}
 	if (philos)

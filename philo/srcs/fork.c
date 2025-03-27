@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 22:12:12 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/25 23:42:35 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/27 10:28:58 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ int	get_forkstate(t_fork *fork)
 int	set_forkstate(t_philo *philo, t_fork *fork, int state)
 {
 	while (state && get_forkstate(fork))
-		if (timestamp(&philo->last_meal) > philo->sim->time_to_die || \
-			!get_simstate(philo->sim))
+		if (!get_simstate(philo->sim))
 			return (0);
 	pthread_mutex_lock(&fork->state_mutex);
 	if (state)

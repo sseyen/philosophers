@@ -6,23 +6,17 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:20:42 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/26 00:08:52 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/27 11:36:54 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	set_simstate(t_sim *sim, int state)
+void	set_simstate(t_sim *sim, int state)
 {
 	pthread_mutex_lock(&sim->state_mutex);
-	if (state == sim->state)
-	{
-		pthread_mutex_unlock(&sim->state_mutex);
-		return (0);
-	}
 	sim->state = state;
 	pthread_mutex_unlock(&sim->state_mutex);
-	return (1);
 }
 
 int	get_simstate(t_sim *sim)
@@ -42,24 +36,44 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	while (!get_simstate(philo->sim))
 		;
+	if (philo->id % 2)
+		usleep(1000);
 	while (get_simstate(philo->sim) && philo->meals != philo->sim->num_meals)
 	{
-		if (!eat(philo))
-			return (die(philo), NULL);
+		eat(philo);
 		philo->meals++;
 		if (philo->meals == philo->sim->num_meals)
 			break ;
-		if (timestamp(&philo->last_meal) > philo->sim->time_to_die || \
-			!get_simstate(philo->sim))
-			return (die(philo), NULL);
+		if (!get_simstate(philo->sim))
+			return (NULL);
 		printf("%d %d is sleeping\n", timestamp(&philo->sim->start), philo->id);
 		usleep(philo->sim->time_to_sleep * 1000);
-		if (timestamp(&philo->last_meal) > philo->sim->time_to_die || \
-			!get_simstate(philo->sim))
-			return (die(philo), NULL);
+		if (!get_simstate(philo->sim))
+			return (NULL);
 		printf("%d %d is thinking\n", timestamp(&philo->sim->start), philo->id);
 	}
 	return (NULL);
+}
+
+void	check_sim(t_sim *sim, t_philo *philo)
+{
+	int	i;
+
+	while (get_simstate(sim))
+	{
+		i = 0;
+		while (i < sim->num_philo)
+		{
+			if (timestamp(&philo[i].last_meal) >= sim->time_to_die)
+			{
+				set_simstate(sim, 0);
+				printf("%d %d died\n", \
+					timestamp(&philo->sim->start), philo[i].id);
+				return ;
+			}
+			i++;
+		}
+	}
 }
 
 void	run_sim(t_sim *sim, t_philo *philos)
@@ -75,15 +89,10 @@ void	run_sim(t_sim *sim, t_philo *philos)
 	i = 0;
 	gettimeofday(&sim->start, NULL);
 	while (i < sim->num_philo)
-	{
-		philos[i].last_meal = sim->start;
-		i++;
-	}
+		philos[i++].last_meal = sim->start;
 	set_simstate(sim, 1);
+	check_sim(sim, philos);
 	i = 0;
 	while (i < sim->num_philo)
-	{
-		pthread_join(philos[i].thread, NULL);
-		i++;
-	}
+		pthread_join(philos[i++].thread, NULL);
 }
