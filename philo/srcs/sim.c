@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:20:42 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/27 11:36:54 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/03/27 14:54:45 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	get_simstate(t_sim *sim)
 {
 	int	state;
 
+	usleep(100);
 	pthread_mutex_lock(&sim->state_mutex);
 	state = sim->state;
 	pthread_mutex_unlock(&sim->state_mutex);
@@ -36,8 +37,6 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	while (!get_simstate(philo->sim))
 		;
-	if (philo->id % 2)
-		usleep(1000);
 	while (get_simstate(philo->sim) && philo->meals != philo->sim->num_meals)
 	{
 		eat(philo);
@@ -45,11 +44,11 @@ void	*philo_routine(void *arg)
 		if (philo->meals == philo->sim->num_meals)
 			break ;
 		if (!get_simstate(philo->sim))
-			return (NULL);
+			break ;
 		printf("%d %d is sleeping\n", timestamp(&philo->sim->start), philo->id);
 		usleep(philo->sim->time_to_sleep * 1000);
 		if (!get_simstate(philo->sim))
-			return (NULL);
+			break ;
 		printf("%d %d is thinking\n", timestamp(&philo->sim->start), philo->id);
 	}
 	return (NULL);
