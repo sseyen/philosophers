@@ -64,23 +64,9 @@ int	timestamp(struct timeval *start)
 	return (ms);
 }
 
-void	exit_sim(t_sim *sim, t_fork *forks, t_philo *philos)
+void	mprint(t_sim *sim, char *str, int timestamp, int id)
 {
-	int	i;
-
-	i = 0;
-	if (forks)
-	{
-		while (i < sim->num_philo)
-		{
-			pthread_mutex_destroy(&forks[i].mutex);
-			pthread_mutex_destroy(&forks[i].state_mutex);
-			i++;
-		}
-		free(forks);
-	}
-	if (philos)
-		free(philos);
-	if (sim)
-		pthread_mutex_destroy(&sim->state_mutex);
+	pthread_mutex_lock(&sim->print_mutex);
+	printf(str, timestamp, id);
+	pthread_mutex_unlock(&sim->print_mutex);
 }

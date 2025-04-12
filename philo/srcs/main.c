@@ -47,7 +47,10 @@ int	main(int argc, char **argv)
 	if (!philos)
 		return (exit_sim(&sim, forks, NULL), 1);
 	if (pthread_mutex_init(&sim.state_mutex, NULL))
-		return (printf("Error: mutex init failed\n"),
+		return (printf("Error: state mutex init failed\n"),
+			exit_sim(&sim, forks, philos), 1);
+	if (pthread_mutex_init(&sim.print_mutex, NULL))
+		return (printf("Error: print mutex init failed\n"),
 			exit_sim(&sim, forks, philos), 1);
 	sim.state = 0;
 	run_sim(&sim, philos);

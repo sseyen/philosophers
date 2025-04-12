@@ -13,7 +13,7 @@
 NAME = philo
 
 SRCS = srcs/main.c srcs/sim.c srcs/init.c srcs/utils.c \
-	srcs/actions.c srcs/fork.c
+	srcs/philo.c srcs/philo_utils.c srcs/fork.c
 
 OBJS = $(SRCS:.c=.o)
 

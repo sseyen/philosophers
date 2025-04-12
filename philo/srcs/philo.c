@@ -12,30 +12,23 @@
 
 #include "philo.h"
 
+
 void	put_fork(t_philo *philo)
 {
 	if (get_forkstate(philo->left_fork) == philo->id)
-	{
-		pthread_mutex_unlock(&philo->left_fork->mutex);
 		set_forkstate(philo, philo->left_fork, 0);
-	}
 	if (get_forkstate(philo->right_fork) == philo->id)
-	{
-		pthread_mutex_unlock(&philo->right_fork->mutex);
 		set_forkstate(philo, philo->right_fork, 0);
-	}
 }
 
 void	pick_fork(t_philo *philo, t_fork *first, t_fork *second)
 {
 	if (!set_forkstate(philo, first, 1))
 		return ;
-	pthread_mutex_lock(&first->mutex);
 	if (!get_simstate(philo->sim))
 		return (put_fork(philo));
 	if (!set_forkstate(philo, second, 1))
 		return (put_fork(philo));
-	pthread_mutex_lock(&second->mutex);
 }
 
 void	eat(t_philo *philo)
@@ -43,12 +36,41 @@ void	eat(t_philo *philo)
 	pick_fork(philo, philo->left_fork, philo->right_fork);
 	if (!get_simstate(philo->sim))
 		return (put_fork(philo));
-	printf("%d %d has taken a fork\n", \
+	mprint(philo->sim, "%d %d has taken a fork\n", \
 		timestamp(&philo->sim->start), philo->id);
 	if (!get_simstate(philo->sim))
 		return (put_fork(philo));
-	printf("%d %d is eating\n", timestamp(&philo->sim->start), philo->id);
+	mprint(philo->sim, "%d %d is eating\n", \
+		timestamp(&philo->sim->start), philo->id);
 	usleep(philo->sim->time_to_eat * 1000);
 	gettimeofday(&philo->last_meal, NULL);
 	put_fork(philo);
+}
+
+void	*philo_routine(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	while (!get_simstate(philo->sim))
+		;
+	while (get_simstate(philo->sim) && philo->meals != philo->sim->num_meals)
+	{
+		if (philo->id % 2)
+			usleep(1000);
+		eat(philo);
+		philo->meals++;
+		if (philo->meals == philo->sim->num_meals)
+			break ;
+		if (!get_simstate(philo->sim))
+			break ;
+		mprint(philo->sim, "%d %d is sleeping\n", \
+			timestamp(&philo->sim->start), philo->id);
+		usleep(philo->sim->time_to_sleep * 1000);
+		if (!get_simstate(philo->sim))
+			break ;
+		mprint(philo->sim, "%d %d is thinking\n", \
+			timestamp(&philo->sim->start), philo->id);
+	}
+	return (NULL);
 }

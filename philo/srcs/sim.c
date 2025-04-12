@@ -30,33 +30,7 @@ int	get_simstate(t_sim *sim)
 	return (state);
 }
 
-void	*philo_routine(void *arg)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	while (!get_simstate(philo->sim))
-		;
-	while (get_simstate(philo->sim) && philo->meals != philo->sim->num_meals)
-	{
-		if (philo->id % 2)
-			usleep(1000);
-		eat(philo);
-		philo->meals++;
-		if (philo->meals == philo->sim->num_meals)
-			break ;
-		if (!get_simstate(philo->sim))
-			break ;
-		printf("%d %d is sleeping\n", timestamp(&philo->sim->start), philo->id);
-		usleep(philo->sim->time_to_sleep * 1000);
-		if (!get_simstate(philo->sim))
-			break ;
-		printf("%d %d is thinking\n", timestamp(&philo->sim->start), philo->id);
-	}
-	return (NULL);
-}
-
-void	check_sim(t_sim *sim, t_philo *philo)
+void	monitor(t_sim *sim, t_philo *philo)
 {
 	int	i;
 	int	philos_ate;
@@ -67,11 +41,11 @@ void	check_sim(t_sim *sim, t_philo *philo)
 		philos_ate = 0;
 		while (i < sim->num_philo)
 		{
-			if (philo[i].meals != sim->num_meals && \
+			if (get_meals(philo[i]) != sim->num_meals && \
 				timestamp(&philo[i].last_meal) >= sim->time_to_die)
 			{
 				set_simstate(sim, 0);
-				printf("%d %d died\n", \
+				mprint(sim, "%d %d died\n", \
 					timestamp(&philo->sim->start), philo[i].id);
 				return ;
 			}
@@ -81,6 +55,31 @@ void	check_sim(t_sim *sim, t_philo *philo)
 		}
 		if (philos_ate == sim->num_philo)
 			return (set_simstate(sim, 0));
+	}
+}
+
+void	exit_sim(t_sim *sim, t_fork *forks, t_philo *philos)
+{
+	int	i;
+
+	i = 0;
+	if (forks)
+	{
+		while (i < sim->num_philo)
+		{
+			pthread_mutex_destroy(&forks[i].state_mutex);
+			i++;
+		}
+		free(forks);
+	}
+	if (philos)
+	{
+		free(philos);
+	}
+	if (sim)
+	{
+		pthread_mutex_destroy(&sim->state_mutex);
+		pthread_mutex_destroy(&sim->print_mutex);
 	}
 }
 
@@ -99,7 +98,7 @@ void	run_sim(t_sim *sim, t_philo *philos)
 	while (i < sim->num_philo)
 		philos[i++].last_meal = sim->start;
 	set_simstate(sim, 1);
-	check_sim(sim, philos);
+	monitor(sim, philos);
 	i = 0;
 	while (i < sim->num_philo)
 		pthread_join(philos[i++].thread, NULL);

@@ -18,12 +18,14 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <string.h>
 
 typedef struct s_sim
 {
 	struct timeval	start;
 	pthread_mutex_t	state_mutex;
 	int				state;
+	pthread_mutex_t	print_mutex;
 	int				num_philo;
 	int				time_to_die;
 	int				time_to_eat;
@@ -33,7 +35,6 @@ typedef struct s_sim
 
 typedef struct s_fork
 {
-	pthread_mutex_t	mutex;
 	pthread_mutex_t	state_mutex;
 	int				state;
 }	t_fork;
@@ -45,6 +46,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
+	pthread_mutex_t	meal_mutex;
 	struct timeval	last_meal;
 	t_sim			*sim;
 }	t_philo;
@@ -57,10 +59,14 @@ t_philo			*init_philos(t_sim *sim, t_fork *forks);
 void			set_simstate(t_sim *sim, int state);
 int				get_simstate(t_sim *sim);
 void			run_sim(t_sim *sim, t_philo *philos);
+void			exit_sim(t_sim *sim, t_fork *forks, t_philo *philos);
 
-// Actions
-void			pick_fork(t_philo *philo, t_fork *first, t_fork *second);
-void			eat(t_philo *philo);
+// Philo
+void			*philo_routine(void *arg);
+
+// Utils philo
+int				get_meals(t_philo *philo);
+void			set_meals(t_philo *philo);
 
 // Fork
 int				get_forkstate(t_fork *fork);
@@ -71,6 +77,6 @@ int				ft_atoi(const char *str);
 int				ft_isdigit(int c);
 int				ft_isnumber(char *str);
 int				timestamp(struct timeval *start);
-void			exit_sim(t_sim *sim, t_fork *forks, t_philo *philos);
+void			mprint(t_sim *sim, char *str, int timestamp, int id);
 
 #endif

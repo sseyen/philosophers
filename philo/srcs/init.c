@@ -23,31 +23,10 @@ int	init_state_mutexes(t_fork *forks, t_sim *sim)
 		{
 			while (i > 0)
 				pthread_mutex_destroy(&forks[--i].state_mutex);
-			while (i < sim->num_philo)
-				pthread_mutex_destroy(&forks[i++].mutex);
 			free(forks);
 			return (0);
 		}
 		forks[i].state = 0;
-		i++;
-	}
-	return (1);
-}
-
-int	init_mutexes(t_fork *forks, t_sim *sim)
-{
-	int	i;
-
-	i = 0;
-	while (i < sim->num_philo)
-	{
-		if (pthread_mutex_init(&forks[i].mutex, NULL) != 0)
-		{
-			while (i > 0)
-				pthread_mutex_destroy(&forks[--i].mutex);
-			free(forks);
-			return (0);
-		}
 		i++;
 	}
 	return (1);
@@ -63,17 +42,31 @@ t_fork	*init_forks(t_sim *sim)
 		printf("Error: malloc failed (forks)\n");
 		return (NULL);
 	}
-	if (!init_mutexes(forks, sim))
-	{
-		printf("Error: failed to init mutexes\n");
-		return (NULL);
-	}
 	if (!init_state_mutexes(forks, sim))
 	{
 		printf("Error: failed to init state mutexes\n");
 		return (NULL);
 	}
 	return (forks);
+}
+
+int	init_meal_mutexes(t_philo *philos, t_sim *sim)
+{
+	int	i;
+
+	i = 0;
+	while (i < sim->num_philo)
+	{
+		if (pthread_mutex_init(&philos[i].meal_mutex, NULL) != 0)
+		{
+			while (i > 0)
+				pthread_mutex_destroy(&philos[--i].meal_mutex);
+			free(philos);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
 }
 
 t_philo	*init_philos(t_sim *sim, t_fork *forks)
@@ -83,10 +76,7 @@ t_philo	*init_philos(t_sim *sim, t_fork *forks)
 
 	philos = malloc(sizeof(t_philo) * sim->num_philo);
 	if (!philos)
-	{
-		printf("Error: malloc failed (philos)\n");
-		return (NULL);
-	}
+		return (printf("Error: malloc failed (philos)\n"), NULL);
 	i = 0;
 	while (i < sim->num_philo)
 	{
@@ -100,5 +90,7 @@ t_philo	*init_philos(t_sim *sim, t_fork *forks)
 		philos[i].sim = sim;
 		i++;
 	}
+	if (!init_meal_mutexes(philos, sim))
+		return (printf("Error: failed to init meal mutexes\n"), NULL);
 	return (philos);
 }
