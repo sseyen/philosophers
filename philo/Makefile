@@ -6,7 +6,7 @@
 #    By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/18 18:25:25 by alisseye          #+#    #+#              #
-#    Updated: 2025/03/25 22:16:43 by alisseye         ###   ########.fr        #
+#    Updated: 2025/04/12 19:35:33 by alisseye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRCS = srcs/main.c srcs/sim.c srcs/init.c srcs/utils.c \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -I includes

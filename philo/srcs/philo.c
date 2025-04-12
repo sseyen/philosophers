@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   actions.c                                          :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 12:07:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/27 15:13:55 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/12 19:42:44 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ void	eat(t_philo *philo)
 	pick_fork(philo, philo->left_fork, philo->right_fork);
 	if (!get_simstate(philo->sim))
 		return (put_fork(philo));
-	mprint(philo->sim, "%d %d has taken a fork\n", \
+	mprintf(philo->sim, "%d %d has taken a fork\n", \
 		timestamp(&philo->sim->start), philo->id);
 	if (!get_simstate(philo->sim))
 		return (put_fork(philo));
-	mprint(philo->sim, "%d %d is eating\n", \
+	mprintf(philo->sim, "%d %d is eating\n", \
 		timestamp(&philo->sim->start), philo->id);
 	usleep(philo->sim->time_to_eat * 1000);
-	gettimeofday(&philo->last_meal, NULL);
+	set_last_meal(philo);
 	put_fork(philo);
 }
 
@@ -59,17 +59,17 @@ void	*philo_routine(void *arg)
 		if (philo->id % 2)
 			usleep(1000);
 		eat(philo);
-		philo->meals++;
-		if (philo->meals == philo->sim->num_meals)
+		increase_meals(philo);
+		if (get_meals(philo) == philo->sim->num_meals)
 			break ;
 		if (!get_simstate(philo->sim))
 			break ;
-		mprint(philo->sim, "%d %d is sleeping\n", \
+		mprintf(philo->sim, "%d %d is sleeping\n", \
 			timestamp(&philo->sim->start), philo->id);
 		usleep(philo->sim->time_to_sleep * 1000);
 		if (!get_simstate(philo->sim))
 			break ;
-		mprint(philo->sim, "%d %d is thinking\n", \
+		mprintf(philo->sim, "%d %d is thinking\n", \
 			timestamp(&philo->sim->start), philo->id);
 	}
 	return (NULL);

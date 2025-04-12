@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:59 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/27 11:23:59 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/12 19:42:52 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	timestamp(struct timeval *start)
 	return (ms);
 }
 
-void	mprint(t_sim *sim, char *str, int timestamp, int id)
+void	mprintf(t_sim *sim, char *str, int timestamp, int id)
 {
 	pthread_mutex_lock(&sim->print_mutex);
 	printf(str, timestamp, id);

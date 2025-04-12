@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:20:42 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/27 15:12:40 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/12 19:44:14 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ void	monitor(t_sim *sim, t_philo *philo)
 		philos_ate = 0;
 		while (i < sim->num_philo)
 		{
-			if (get_meals(philo[i]) != sim->num_meals && \
-				timestamp(&philo[i].last_meal) >= sim->time_to_die)
+			if (get_meals(&philo[i]) != sim->num_meals && \
+				get_last_meal(&philo[i]) >= sim->time_to_die)
 			{
 				set_simstate(sim, 0);
-				mprint(sim, "%d %d died\n", \
+				mprintf(sim, "%d %d died\n", \
 					timestamp(&philo->sim->start), philo[i].id);
 				return ;
 			}
-			if (philo[i].meals == sim->num_meals)
+			if (get_meals(&philo[i]) == sim->num_meals)
 				philos_ate++;
 			i++;
 		}
@@ -79,7 +79,7 @@ void	exit_sim(t_sim *sim, t_fork *forks, t_philo *philos)
 	if (sim)
 	{
 		pthread_mutex_destroy(&sim->state_mutex);
-		pthread_mutex_destroy(&sim->print_mutex);
+		// pthread_mutex_destroy(&sim->print_mutex);
 	}
 }
 

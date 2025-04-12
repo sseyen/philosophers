@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:37:03 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/07 14:34:42 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/12 19:42:55 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ void			*philo_routine(void *arg);
 
 // Utils philo
 int				get_meals(t_philo *philo);
-void			set_meals(t_philo *philo);
+void			increase_meals(t_philo *philo);
+int				get_last_meal(t_philo *philo);
+int				set_last_meal(t_philo *philo);
 
 // Fork
 int				get_forkstate(t_fork *fork);
@@ -77,6 +79,6 @@ int				ft_atoi(const char *str);
 int				ft_isdigit(int c);
 int				ft_isnumber(char *str);
 int				timestamp(struct timeval *start);
-void			mprint(t_sim *sim, char *str, int timestamp, int id);
+void			mprintf(t_sim *sim, char *str, int timestamp, int id);
 
 #endif
