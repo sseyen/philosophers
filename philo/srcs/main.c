@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:37:10 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/12 19:02:19 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:43:43 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ int	main(int argc, char **argv)
 		return (exit_sim(&sim, forks, NULL), 1);
 	if (pthread_mutex_init(&sim.state_mutex, NULL))
 		return (printf("Error: state mutex init failed\n"),
-			exit_sim(&sim, forks, philos), 1);
+			exit_sim(NULL, forks, philos), 1);
 	if (pthread_mutex_init(&sim.print_mutex, NULL))
 		return (printf("Error: print mutex init failed\n"),
-			exit_sim(&sim, forks, philos), 1);
+			pthread_mutex_destroy(&sim.state_mutex),
+			exit_sim(NULL, forks, philos), 1);
 	sim.state = 0;
 	run_sim(&sim, philos);
 	exit_sim(&sim, forks, philos);
