@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 12:07:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/14 12:51:42 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:52:28 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	*philo_routine(void *arg)
 	while (!get_simstate(philo->sim))
 		;
 	if (philo->id % 2 != 0)
-		usleep(2000);
+		usleep(1000);
 	while (get_simstate(philo->sim) && philo->meals != philo->sim->num_meals)
 	{
 		eat(philo);
