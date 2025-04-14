@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:43:47 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/12 19:40:31 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:16:46 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	get_meals(t_philo *philo)
 	return (meals);
 }
 
-void increase_meals(t_philo *philo)
+void	increase_meals(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->meals++;

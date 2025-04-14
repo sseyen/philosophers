@@ -6,12 +6,11 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 12:07:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/14 12:52:28 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:16:07 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 void	put_fork(t_philo *philo)
 {
@@ -42,7 +41,7 @@ void	eat(t_philo *philo)
 		return (put_fork(philo));
 	mprintf(philo->sim, "%d %d is eating\n", \
 		timestamp(&philo->sim->start), philo->id);
-	usleep(philo->sim->time_to_eat * 1000);
+	act(philo->sim, philo->sim->time_to_eat);
 	set_last_meal(philo);
 	put_fork(philo);
 }
@@ -66,7 +65,7 @@ void	*philo_routine(void *arg)
 			break ;
 		mprintf(philo->sim, "%d %d is sleeping\n", \
 			timestamp(&philo->sim->start), philo->id);
-		usleep(philo->sim->time_to_sleep * 1000);
+		act(philo->sim, philo->sim->time_to_sleep);
 		if (!get_simstate(philo->sim))
 			break ;
 		mprintf(philo->sim, "%d %d is thinking\n", \

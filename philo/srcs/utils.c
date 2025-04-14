@@ -6,51 +6,23 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:59 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/12 19:42:52 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:16:36 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_atoi(const char *str)
+void	act(t_sim *sim, int ms)
 {
-	int	sign;
-	int	result;
+	struct timeval	now;
 
-	result = 0;
-	sign = 1;
-	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
-		str++;
-	if (*str == '-' || *str == '+')
+	gettimeofday(&now, NULL);
+	while (get_simstate(sim))
 	{
-		if (*str == '-')
-			sign = -sign;
-		str++;
+		if (timestamp(&now) >= ms)
+			return ;
+		usleep(100);
 	}
-	while (*str >= '0' && *str <= '9')
-	{
-		result = result * 10 + (*str - '0');
-		str++;
-	}
-	return (result * sign);
-}
-
-int	ft_isdigit(int c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-int	ft_isnumber(char *str)
-{
-	if (*str == '-' || *str == '+')
-		str++;
-	while (*str)
-	{
-		if (!ft_isdigit(*str))
-			return (0);
-		str++;
-	}
-	return (1);
 }
 
 int	timestamp(struct timeval *start)
