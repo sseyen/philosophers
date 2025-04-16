@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:37:03 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/14 17:06:55 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:33:50 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ typedef struct s_philo
 	t_sim			*sim;
 }	t_philo;
 
+// Parse
+int				parse_args(int argc, char **argv, t_sim *sim);
+
 // Init
 t_fork			*init_forks(t_sim *sim);
 t_philo			*init_philos(t_sim *sim, t_fork *forks);
@@ -73,11 +76,6 @@ int				set_last_meal(t_philo *philo);
 // Fork
 int				get_forkstate(t_fork *fork);
 int				set_forkstate(t_philo *philo, t_fork *fork, int state);
-
-// Utils numbers
-int				ft_atoi(const char *str);
-int				ft_isdigit(int c);
-int				ft_isnumber(char *str);
 
 // Utils
 void			act(t_sim *sim, int ms);
