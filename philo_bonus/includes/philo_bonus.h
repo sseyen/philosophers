@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:19:09 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/12 14:44:47 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/17 15:10:06 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
 
 typedef struct s_sim
 {
-	struct timeval	start;
 	sem_t			*state_sem;
+	sem_t			*print_sem;
+	sem_t			*last_meal_time_sem;
+	struct timeval	*last_meal_time;
 	int				num_philo;
 	int				time_to_die;
 	int				time_to_eat;
@@ -40,11 +42,22 @@ typedef struct s_philo
 	t_sim			*sim;
 }	t_philo;
 
+// Parse
+int				parse_args(int argc, char **argv, t_sim *sim);
+
+// Init
+int				init_sems(t_sim *sim, sem_t **forks);
+int				init_philos(t_sim *sim, t_philo **philos);
+
+// Sim
+void			run_sim(t_sim *sim, t_philo *philos, sem_t *forks);
+
+// Philo
+int				philo_main(t_philo *philo, t_sim *sim);
+
 // Utils
-int		ft_atoi(const char *str);
-int		ft_isdigit(int c);
-int		ft_isnumber(char *str);
-int		timestamp(struct timeval *start);
-void 	exit_sim(t_sim *sim, sem_t *forks, t_philo *philos);
+int				timestamp(struct timeval *start);
+void			act(t_sim *sim, int ms);
+void			exit_sim(t_sim *sim, sem_t *forks, t_philo *philos);
 
 #endif

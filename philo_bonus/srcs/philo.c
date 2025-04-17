@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:03:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/12 14:49:00 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/16 19:54:57 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,18 @@
 
 int	philo_main(t_philo *philo, t_sim *sim)
 {
-	pthread_t	monitor_thread;
-
-	while (!sem)
+	while (!get_simstate(sim))
 		usleep(100);
-	philo->meals = 0;
-	gettimeofday(&sim->start, NULL);
-	philo->last_meal = philo->sim->start;
-	
+	if (philo->id % 2 == 0)
+		usleep(1000);
+	while (get_simstate(sim) && philo->meals != sim->num_meals)
+	{
+		eat(philo);
+		increase_meals(philo);
+		if (get_simstate(sim))
+			sleep_philo(philo);
+		if (get_simstate(sim))
+			think(philo);
+	}
 	return (0);
 }

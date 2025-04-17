@@ -6,52 +6,11 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:59 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/12 14:48:44 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/16 19:59:44 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-int	ft_atoi(const char *str)
-{
-	int	sign;
-	int	result;
-
-	result = 0;
-	sign = 1;
-	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
-		str++;
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			sign = -sign;
-		str++;
-	}
-	while (*str >= '0' && *str <= '9')
-	{
-		result = result * 10 + (*str - '0');
-		str++;
-	}
-	return (result * sign);
-}
-
-int	ft_isdigit(int c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-int	ft_isnumber(char *str)
-{
-	if (*str == '-' || *str == '+')
-		str++;
-	while (*str)
-	{
-		if (!ft_isdigit(*str))
-			return (0);
-		str++;
-	}
-	return (1);
-}
 
 int	timestamp(struct timeval *start)
 {
@@ -64,19 +23,35 @@ int	timestamp(struct timeval *start)
 	return (ms);
 }
 
+void	act(t_sim *sim, int ms)
+{
+	struct timeval	now;
+	int i = 0;
+
+	(void)sim;
+	gettimeofday(&now, NULL);
+	while (i++ < 100)
+	{
+		if (timestamp(&now) >= ms)
+			return ;
+		usleep(100);
+	}
+}
+
 void	exit_sim(t_sim *sim, sem_t *forks, t_philo *philos)
 {
-	int	i;
-
-	i = 0;
+	if (sim->state_sem)
+	{
+		sem_close(sim->print_sem);
+		sem_unlink("/print");
+		sem_close(sim->state_sem);
+		sem_unlink("/state");
+	}
 	if (forks)
 	{
 		sem_close(forks);
 		sem_unlink("/forks");
 	}
-	if (sim->state_sem)
-	{
-		sem_close(sim->state_sem);
-		sem_unlink("/state");
-	}
+	if (philos)
+		free(philos);
 }

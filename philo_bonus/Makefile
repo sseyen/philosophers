@@ -3,15 +3,16 @@ NAME = philo_bonus
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = srcs/main.c srcs/utils.c
+SRCS = srcs/main.c srcs/parse.c srcs/init.c \
+	srcs/utils.c srcs/sim.c srcs/philo.c
 
 OBJS = $(SRCS:.c=.o)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ -I includes
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -I includes
 
 all: $(NAME)
 
@@ -24,4 +25,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
-
