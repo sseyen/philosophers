@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:38:04 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 14:12:41 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:54:02 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	init_sems(t_sim *sim, sem_t **forks)
 		printf("Error: forks sem init failed\n");
 		return (0);
 	}
-	
 	return (1);
 }
 

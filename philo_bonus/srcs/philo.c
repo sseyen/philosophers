@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:03:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 14:49:49 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:54:18 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,12 @@ static void	philo_routine(t_philo *philo, t_sim *sim)
 		if (philo->meals == sim->num_meals)
 			break ;
 		sprint(sim, "is sleeping", \
-			timestamp(&philo->sim->start_time) - philo->sim->num_philo, philo->id);
+			timestamp(&philo->sim->start_time) - \
+			philo->sim->num_philo, philo->id);
 		act(philo->sim->time_to_sleep);
 		sprint(sim, "is thinking", \
-			timestamp(&philo->sim->start_time) - philo->sim->num_philo, philo->id);
+			timestamp(&philo->sim->start_time) - \
+			philo->sim->num_philo, philo->id);
 	}
 }
 
