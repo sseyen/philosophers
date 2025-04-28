@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:03:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 13:37:15 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:32:39 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,14 @@ int	philo_main(t_philo *philo, t_sim *sim)
 {
 	pthread_t	monitor;
 
-	while (timestamp(&philo->last_meal) < philo->sim->num_philo)
+	while (timestamp(&philo->sim->start_time) < philo->sim->num_philo)
 	{
 		gettimeofday(&philo->last_meal, NULL);
 		usleep(100);
 	}
 	pthread_create(&monitor, NULL, &monitor_philo, philo);
-	printf("Philo %d started\n", philo->id);
 	if (philo->id % 2 == 0)
-		usleep(2000);
+		usleep(1000);
 	philo_routine(philo, sim);
 	pthread_join(monitor, NULL);
 	exit(0);

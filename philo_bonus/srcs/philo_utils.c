@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 12:58:31 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 13:59:33 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:30:32 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 
 int	get_last_meal(t_philo *philo)
 {
-	struct timeval	now;
 	int				ms;
 
 	sem_wait(philo->sim->meal_sem);
-	gettimeofday(&now, NULL);
-	ms = timestamp(&philo->sim->start_time) + \
-		philo->sim->num_philo - timestamp(&philo->last_meal);
+	ms = timestamp(&philo->last_meal);
 	sem_post(philo->sim->meal_sem);
 	return (ms);
 }
