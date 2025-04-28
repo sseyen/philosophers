@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:03:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 17:09:21 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:12:00 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,7 @@ static void	*monitor_philo(void *arg)
 		if (get_num_meals(philo) == philo->sim->num_meals)
 			break ;
 		if (get_last_meal(philo) > philo->sim->time_to_die)
-		{
-			sem_wait(philo->sim->meal_sem);
-			free(philo - philo->id + 1);
-			sem_close(philo->sim->forks_sem);
-			sem_close(philo->sim->meal_sem);
-			sem_close(philo->sim->print_sem);
-			sem_post(philo->sim->print_sem);
 			exit(1);
-		}
 		usleep(100);
 	}
 	return (NULL);
@@ -84,9 +76,5 @@ int	philo_main(t_philo *philo, t_sim *sim, t_philo *philos)
 		usleep(1000);
 	philo_routine(philo, sim);
 	pthread_join(monitor, NULL);
-	free(philos);
-	sem_close(sim->forks_sem);
-	sem_close(sim->meal_sem);
-	sem_close(sim->print_sem);
 	exit(0);
 }
