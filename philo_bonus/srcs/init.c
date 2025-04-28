@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:38:04 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 14:54:02 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:03:01 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 int	init_sems(t_sim *sim, sem_t **forks)
 {
+	sem_unlink("/print");
+	sem_unlink("/meal");
+	sem_unlink("/forks");
 	sim->print_sem = sem_open("/print", O_CREAT, 0644, 1);
 	if (sim->print_sem == SEM_FAILED)
 	{
