@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:59 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 13:06:29 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 13:59:59 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	exit_sim(t_sim *sim, sem_t *forks, t_philo *philos)
 	{
 		sem_close(sim->print_sem);
 		sem_unlink("/print");
+		sem_close(sim->meal_sem);
+		sem_unlink("/meal");
 	}
 	if (forks)
 	{

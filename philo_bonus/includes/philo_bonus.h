@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:19:09 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 13:37:53 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 13:59:04 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_sim
 {
 	sem_t			*print_sem;
 	sem_t			*forks_sem;
+	sem_t			*meal_sem;
 	struct timeval	start_time;
 	int				num_philo;
 	int				time_to_die;
@@ -39,7 +40,6 @@ typedef struct s_philo
 	pid_t			pid;
 	int				meals;
 	struct timeval	last_meal;
-	sem_t			*meal_sem;
 	t_sim			*sim;
 }	t_philo;
 
