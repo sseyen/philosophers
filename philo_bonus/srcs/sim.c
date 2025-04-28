@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:06:25 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 15:25:54 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:13:35 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	fork_philos(t_philo *philos, t_sim *sim)
 		philos[i].last_meal = sim->start_time;
 		philos[i].pid = fork();
 		if (philos[i].pid == 0)
-			philo_main(&philos[i], sim, philos);
+			philo_main(&philos[i], sim);
 		if (philos[i].pid < 0)
 		{
 			printf("Error: Fork failed\n");
