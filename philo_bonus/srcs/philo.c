@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:03:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 17:02:31 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:06:06 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	*monitor_philo(void *arg)
 			break ;
 		if (get_last_meal(philo) > philo->sim->time_to_die)
 		{
-			free(philo - philo->sim->num_philo + 1);
+			free(philo - philo->id + 1);
 			sem_close(philo->sim->forks_sem);
 			sem_close(philo->sim->meal_sem);
 			sem_close(philo->sim->print_sem);
