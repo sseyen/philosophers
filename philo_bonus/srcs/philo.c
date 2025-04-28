@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:03:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 15:13:55 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:25:45 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	philo_routine(t_philo *philo, t_sim *sim)
 	}
 }
 
-int	philo_main(t_philo *philo, t_sim *sim)
+int	philo_main(t_philo *philo, t_sim *sim, t_philo *philos)
 {
 	pthread_t	monitor;
 
@@ -76,5 +76,6 @@ int	philo_main(t_philo *philo, t_sim *sim)
 		usleep(1000);
 	philo_routine(philo, sim);
 	pthread_join(monitor, NULL);
+	free(philos);
 	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:19:09 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 15:01:56 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:25:39 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int				init_philos(t_sim *sim, t_philo **philos);
 void			run_sim(t_sim *sim, t_philo *philos);
 
 // Philo
-int				philo_main(t_philo *philo, t_sim *sim);
+int				philo_main(t_philo *philo, t_sim *sim, t_philo *philos);
 
 // Utils philo
 int				get_last_meal(t_philo *philo);
