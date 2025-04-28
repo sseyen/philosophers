@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:19:09 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 14:59:58 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:01:56 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/time.h>
 # include <semaphore.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 
 typedef struct s_sim
 {
