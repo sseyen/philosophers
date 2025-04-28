@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:19:07 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/17 15:11:33 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 13:03:36 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!init_sems(&sim, &forks))
 		return (1);
+	sim.forks_sem = forks;
 	if (!init_philos(&sim, &philos))
 	{
 		exit_sim(&sim, forks, NULL);
 		return (1);
 	}
-	run_sim(&sim, philos, forks);
+	run_sim(&sim, philos);
 	exit_sim(&sim, forks, philos);
 	return (0);
 }

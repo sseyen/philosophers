@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 14:19:09 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/17 15:10:06 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 13:37:53 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <pthread.h>
+# include <signal.h>
 # include <sys/time.h>
 # include <semaphore.h>
 
 typedef struct s_sim
 {
-	sem_t			*state_sem;
 	sem_t			*print_sem;
-	sem_t			*last_meal_time_sem;
-	struct timeval	*last_meal_time;
+	sem_t			*forks_sem;
+	struct timeval	start_time;
 	int				num_philo;
 	int				time_to_die;
 	int				time_to_eat;
@@ -39,6 +39,7 @@ typedef struct s_philo
 	pid_t			pid;
 	int				meals;
 	struct timeval	last_meal;
+	sem_t			*meal_sem;
 	t_sim			*sim;
 }	t_philo;
 
@@ -50,14 +51,21 @@ int				init_sems(t_sim *sim, sem_t **forks);
 int				init_philos(t_sim *sim, t_philo **philos);
 
 // Sim
-void			run_sim(t_sim *sim, t_philo *philos, sem_t *forks);
+void			run_sim(t_sim *sim, t_philo *philos);
 
 // Philo
 int				philo_main(t_philo *philo, t_sim *sim);
 
+// Utils philo
+int				get_last_meal(t_philo *philo);
+void			set_last_meal(t_philo *philo);
+void			increase_meals(t_philo *philo);
+int				get_num_meals(t_philo *philo);
+
 // Utils
 int				timestamp(struct timeval *start);
-void			act(t_sim *sim, int ms);
+void			act(int ms);
 void			exit_sim(t_sim *sim, sem_t *forks, t_philo *philos);
+void			sprint(t_sim *sim, char *str, int timestamp, int id);
 
 #endif

@@ -4,7 +4,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 SRCS = srcs/main.c srcs/parse.c srcs/init.c \
-	srcs/utils.c srcs/sim.c srcs/philo.c
+	srcs/utils.c srcs/sim.c srcs/philo.c \
+	srcs/philo_utils.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:59 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/16 19:59:44 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 13:06:29 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,28 @@ int	timestamp(struct timeval *start)
 	return (ms);
 }
 
-void	act(t_sim *sim, int ms)
+void	act(int ms)
 {
 	struct timeval	now;
-	int i = 0;
 
-	(void)sim;
 	gettimeofday(&now, NULL);
-	while (i++ < 100)
-	{
-		if (timestamp(&now) >= ms)
-			return ;
+	while (timestamp(&now) < ms)
 		usleep(100);
-	}
+}
+
+void	sprint(t_sim *sim, char *str, int timestamp, int id)
+{
+	sem_wait(sim->print_sem);
+	printf("%d %d %s\n", timestamp, id, str);
+	sem_post(sim->print_sem);
 }
 
 void	exit_sim(t_sim *sim, sem_t *forks, t_philo *philos)
 {
-	if (sim->state_sem)
+	if (sim)
 	{
 		sem_close(sim->print_sem);
 		sem_unlink("/print");
-		sem_close(sim->state_sem);
-		sem_unlink("/state");
 	}
 	if (forks)
 	{
