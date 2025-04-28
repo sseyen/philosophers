@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:03:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 14:54:18 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:13:55 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ static void	eat(t_philo *philo)
 	sprint(philo->sim, "is eating", \
 		timestamp(&philo->sim->start_time) - philo->sim->num_philo, philo->id);
 	act(philo->sim->time_to_eat);
+	sem_wait(philo->sim->meal_sem);
 	gettimeofday(&philo->last_meal, NULL);
+	sem_post(philo->sim->meal_sem);
 	sem_post(philo->sim->forks_sem);
 	sem_post(philo->sim->forks_sem);
 }
