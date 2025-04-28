@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:06:25 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 14:22:53 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:50:06 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static void	kill_all(t_sim *sim, t_philo *philos, pid_t pid)
 			id = i + 1;
 		i++;
 	}
-	printf("%d %d died\n", timestamp(&sim->start_time), id);
+	printf("%d %d died\n", \
+		timestamp(&sim->start_time) - sim->num_philo, id);
 }
 
 static void	fork_philos(t_philo *philos, t_sim *sim)

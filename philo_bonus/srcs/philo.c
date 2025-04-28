@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:03:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/28 14:32:39 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:49:49 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static void	eat(t_philo *philo)
 	sem_wait(philo->sim->forks_sem);
 	sem_wait(philo->sim->forks_sem);
 	sprint(philo->sim, "has taken a fork", \
-		timestamp(&philo->last_meal), philo->id);
+		timestamp(&philo->sim->start_time) - philo->sim->num_philo, philo->id);
 	sprint(philo->sim, "is eating", \
-		timestamp(&philo->last_meal), philo->id);
+		timestamp(&philo->sim->start_time) - philo->sim->num_philo, philo->id);
 	act(philo->sim->time_to_eat);
 	gettimeofday(&philo->last_meal, NULL);
 	sem_post(philo->sim->forks_sem);
@@ -50,9 +50,11 @@ static void	philo_routine(t_philo *philo, t_sim *sim)
 		increase_meals(philo);
 		if (philo->meals == sim->num_meals)
 			break ;
-		sprint(sim, "is sleeping", timestamp(&philo->last_meal), philo->id);
+		sprint(sim, "is sleeping", \
+			timestamp(&philo->sim->start_time) - philo->sim->num_philo, philo->id);
 		act(philo->sim->time_to_sleep);
-		sprint(sim, "is thinking", timestamp(&philo->last_meal), philo->id);
+		sprint(sim, "is thinking", \
+			timestamp(&philo->sim->start_time) - philo->sim->num_philo, philo->id);
 	}
 }
 
