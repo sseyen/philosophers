@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:37:10 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/16 14:30:38 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/08/31 21:27:14 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	main(int argc, char **argv)
 {
 	t_philo			*philos;
-	t_fork			*forks;
+	pthread_mutex_t	*forks;
 	t_sim			sim;
 
 	if (!parse_args(argc, argv, &sim))

@@ -6,37 +6,36 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:07:52 by alisseye          #+#    #+#             */
-/*   Updated: 2025/03/25 22:45:57 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/08/31 21:31:15 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_state_mutexes(t_fork *forks, t_sim *sim)
+int	init_state_mutexes(pthread_mutex_t *forks, t_sim *sim)
 {
 	int	i;
 
 	i = 0;
 	while (i < sim->num_philo)
 	{
-		if (pthread_mutex_init(&forks[i].state_mutex, NULL) != 0)
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
 		{
 			while (i > 0)
-				pthread_mutex_destroy(&forks[--i].state_mutex);
+				pthread_mutex_destroy(&forks[--i]);
 			free(forks);
 			return (0);
 		}
-		forks[i].state = 0;
 		i++;
 	}
 	return (1);
 }
 
-t_fork	*init_forks(t_sim *sim)
+pthread_mutex_t	*init_forks(t_sim *sim)
 {
-	t_fork			*forks;
+	pthread_mutex_t	*forks;
 
-	forks = malloc(sizeof(t_fork) * sim->num_philo);
+	forks = malloc(sizeof(pthread_mutex_t) * sim->num_philo);
 	if (!forks)
 	{
 		printf("Error: malloc failed (forks)\n");
@@ -69,7 +68,7 @@ int	init_meal_mutexes(t_philo *philos, t_sim *sim)
 	return (1);
 }
 
-t_philo	*init_philos(t_sim *sim, t_fork *forks)
+t_philo	*init_philos(t_sim *sim, pthread_mutex_t *forks)
 {
 	t_philo	*philos;
 	int		i;

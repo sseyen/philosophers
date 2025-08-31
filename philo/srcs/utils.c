@@ -6,23 +6,19 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:59 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/14 17:16:36 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/08/31 21:11:39 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	act(t_sim *sim, int ms)
+void	act(int ms)
 {
 	struct timeval	now;
 
 	gettimeofday(&now, NULL);
-	while (get_simstate(sim))
-	{
-		if (timestamp(&now) >= ms)
-			return ;
+	while (timestamp(&now) < ms)
 		usleep(100);
-	}
 }
 
 int	timestamp(struct timeval *start)
@@ -36,9 +32,14 @@ int	timestamp(struct timeval *start)
 	return (ms);
 }
 
-void	mprintf(t_sim *sim, char *str, int timestamp, int id)
+void	print_status(t_sim *sim, struct timeval *time, int id, char *status)
 {
 	pthread_mutex_lock(&sim->print_mutex);
-	printf(str, timestamp, id);
+	if (!get_simstate(sim))
+	{
+		pthread_mutex_unlock(&sim->print_mutex);
+		return ;
+	}
+	printf("%d %d %s\n", timestamp(time), id, status);
 	pthread_mutex_unlock(&sim->print_mutex);
 }

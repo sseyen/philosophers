@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:20:42 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/14 12:50:48 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/08/31 21:43:39 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	get_simstate(t_sim *sim)
 {
 	int	state;
 
-	usleep(100);
+	usleep(1);
 	pthread_mutex_lock(&sim->state_mutex);
 	state = sim->state;
 	pthread_mutex_unlock(&sim->state_mutex);
@@ -35,7 +35,7 @@ void	monitor(t_sim *sim, t_philo *philo)
 	int	i;
 	int	philos_ate;
 
-	while (get_simstate(sim))
+	while (1)
 	{
 		i = 0;
 		philos_ate = 0;
@@ -44,9 +44,10 @@ void	monitor(t_sim *sim, t_philo *philo)
 			if (get_meals(&philo[i]) != sim->num_meals && \
 				get_last_meal(&philo[i]) >= sim->time_to_die)
 			{
+				pthread_mutex_lock(&sim->print_mutex);
 				set_simstate(sim, 0);
-				mprintf(sim, "%d %d died\n", \
-					timestamp(&philo->sim->start), philo[i].id);
+				printf("%d %d %s\n", timestamp(&sim->start), philo[i].id, DEAD);
+				pthread_mutex_unlock(&sim->print_mutex);
 				return ;
 			}
 			if (get_meals(&philo[i]) == sim->num_meals)
@@ -58,7 +59,7 @@ void	monitor(t_sim *sim, t_philo *philo)
 	}
 }
 
-void	exit_sim(t_sim *sim, t_fork *forks, t_philo *philos)
+void	exit_sim(t_sim *sim, pthread_mutex_t *forks, t_philo *philos)
 {
 	int	i;
 
@@ -67,7 +68,7 @@ void	exit_sim(t_sim *sim, t_fork *forks, t_philo *philos)
 	{
 		while (i < sim->num_philo)
 		{
-			pthread_mutex_destroy(&forks[i].state_mutex);
+			pthread_mutex_destroy(&forks[i]);
 			i++;
 		}
 		free(forks);
@@ -95,9 +96,8 @@ void	run_sim(t_sim *sim, t_philo *philos)
 	}
 	i = 0;
 	gettimeofday(&sim->start, NULL);
-	while (i < sim->num_philo)
-		philos[i++].last_meal = sim->start;
 	set_simstate(sim, 1);
+	usleep(1000);
 	monitor(sim, philos);
 	i = 0;
 	while (i < sim->num_philo)

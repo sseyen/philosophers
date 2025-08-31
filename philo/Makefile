@@ -6,15 +6,14 @@
 #    By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/18 18:25:25 by alisseye          #+#    #+#              #
-#    Updated: 2025/04/16 14:32:49 by alisseye         ###   ########.fr        #
+#    Updated: 2025/08/31 21:23:41 by alisseye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 SRCS = srcs/main.c srcs/sim.c srcs/init.c srcs/utils.c \
-	srcs/parse.c srcs/philo.c srcs/philo_utils.c \
-	srcs/fork.c
+	srcs/parse.c srcs/philo.c srcs/philo_utils.c
 
 OBJS = $(SRCS:.c=.o)
 

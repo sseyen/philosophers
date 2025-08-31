@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:43:47 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/14 17:16:46 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/08/31 20:54:09 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,19 @@ int	get_last_meal(t_philo *philo)
 	struct timeval	now;
 	int				time;
 
+	pthread_mutex_lock(&philo->meal_mutex);
 	gettimeofday(&now, NULL);
 	time = (now.tv_sec - philo->last_meal.tv_sec) * 1000 + \
 		(now.tv_usec - philo->last_meal.tv_usec) / 1000;
+	pthread_mutex_unlock(&philo->meal_mutex);
 	return (time);
 }
 
 int	set_last_meal(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->meal_mutex);
 	gettimeofday(&philo->last_meal, NULL);
+	pthread_mutex_unlock(&philo->meal_mutex);
 	return (1);
 }
 

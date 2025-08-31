@@ -6,44 +6,29 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 12:07:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/04/14 17:16:07 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/08/31 21:43:43 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	put_fork(t_philo *philo)
-{
-	if (get_forkstate(philo->left_fork) == philo->id)
-		set_forkstate(philo, philo->left_fork, 0);
-	if (get_forkstate(philo->right_fork) == philo->id)
-		set_forkstate(philo, philo->right_fork, 0);
-}
-
-void	pick_fork(t_philo *philo, t_fork *first, t_fork *second)
-{
-	if (!set_forkstate(philo, first, 1))
-		return ;
-	if (!get_simstate(philo->sim))
-		return (put_fork(philo));
-	if (!set_forkstate(philo, second, 1))
-		return (put_fork(philo));
-}
-
 void	eat(t_philo *philo)
 {
-	pick_fork(philo, philo->left_fork, philo->right_fork);
-	if (!get_simstate(philo->sim))
-		return (put_fork(philo));
-	mprintf(philo->sim, "%d %d has taken a fork\n", \
-		timestamp(&philo->sim->start), philo->id);
-	if (!get_simstate(philo->sim))
-		return (put_fork(philo));
-	mprintf(philo->sim, "%d %d is eating\n", \
-		timestamp(&philo->sim->start), philo->id);
-	act(philo->sim, philo->sim->time_to_eat);
+	if (philo->id % 2 != 0)
+		pthread_mutex_lock(philo->left_fork);
+	else
+		pthread_mutex_lock(philo->right_fork);
+	print_status(philo->sim, &philo->sim->start, philo->id, FORK_TAKEN);
+	if (philo->id % 2 != 0)
+		pthread_mutex_lock(philo->right_fork);
+	else
+		pthread_mutex_lock(philo->left_fork);
+	print_status(philo->sim, &philo->sim->start, philo->id, FORK_TAKEN);
+	print_status(philo->sim, &philo->sim->start, philo->id, EATING);
+	act(philo->sim->time_to_eat);
 	set_last_meal(philo);
-	put_fork(philo);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 }
 
 void	*philo_routine(void *arg)
@@ -53,23 +38,20 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	while (!get_simstate(philo->sim))
 		;
+	set_last_meal(philo);
 	if (philo->id % 2 != 0)
 		usleep(1000);
-	while (get_simstate(philo->sim) && philo->meals != philo->sim->num_meals)
+	while (philo->meals != philo->sim->num_meals)
 	{
 		eat(philo);
 		increase_meals(philo);
 		if (get_meals(philo) == philo->sim->num_meals)
 			break ;
+		print_status(philo->sim, &philo->sim->start, philo->id, SLEEPING);
+		act(philo->sim->time_to_sleep);
+		print_status(philo->sim, &philo->sim->start, philo->id, THINKING);
 		if (!get_simstate(philo->sim))
 			break ;
-		mprintf(philo->sim, "%d %d is sleeping\n", \
-			timestamp(&philo->sim->start), philo->id);
-		act(philo->sim, philo->sim->time_to_sleep);
-		if (!get_simstate(philo->sim))
-			break ;
-		mprintf(philo->sim, "%d %d is thinking\n", \
-			timestamp(&philo->sim->start), philo->id);
 	}
 	return (NULL);
 }
