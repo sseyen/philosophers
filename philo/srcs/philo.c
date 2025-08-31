@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 12:07:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/08/31 21:43:43 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/08/31 21:48:04 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	*philo_routine(void *arg)
 		;
 	set_last_meal(philo);
 	if (philo->id % 2 != 0)
-		usleep(1000);
+		usleep(100);
 	while (philo->meals != philo->sim->num_meals)
 	{
 		eat(philo);
