@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 12:07:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/09/13 12:58:12 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:31:10 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,9 @@
 
 void	eat(t_philo *philo)
 {
-	if (philo->id % 2 != 0)
-		pthread_mutex_lock(philo->left_fork);
-	else
-		pthread_mutex_lock(philo->right_fork);
+	pthread_mutex_lock(philo->left_fork);
 	print_status(philo->sim, &philo->sim->start, philo->id, FORK_TAKEN);
-	if (philo->id % 2 != 0)
-		pthread_mutex_lock(philo->right_fork);
-	else
-		pthread_mutex_lock(philo->left_fork);
+	pthread_mutex_lock(philo->right_fork);
 	print_status(philo->sim, &philo->sim->start, philo->id, FORK_TAKEN);
 	print_status(philo->sim, &philo->sim->start, philo->id, EATING);
 	set_last_meal(philo);
