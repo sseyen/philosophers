@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:20:42 by alisseye          #+#    #+#             */
-/*   Updated: 2025/09/14 22:48:45 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:54:44 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ void	monitor(t_sim *sim, t_philo *philo)
 	int	i;
 	int	philos_ate;
 
-	while (timestamp(&sim->start) < (int)(philo->sim->num_philo * 0.2) + 5)
+	while (timestamp(&sim->start) < sim->delay + 10)
 		usleep(100);
 	while (1)
 	{
+		usleep(500);
 		i = 0;
 		philos_ate = 0;
 		while (i < sim->num_philo)
