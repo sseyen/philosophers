@@ -6,28 +6,21 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:20:42 by alisseye          #+#    #+#             */
-/*   Updated: 2025/08/31 21:46:57 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/09/13 13:29:25 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	set_simstate(t_sim *sim, int state)
+static void	kill_philo(t_sim *sim, t_philo *philo)
 {
-	pthread_mutex_lock(&sim->state_mutex);
-	sim->state = state;
-	pthread_mutex_unlock(&sim->state_mutex);
-}
-
-int	get_simstate(t_sim *sim)
-{
-	int	state;
-
-	usleep(1);
-	pthread_mutex_lock(&sim->state_mutex);
-	state = sim->state;
-	pthread_mutex_unlock(&sim->state_mutex);
-	return (state);
+	usleep(100);
+	pthread_mutex_lock(&sim->print_mutex);
+	set_simstate(sim, 0);
+	printf("%d %d %s\n", \
+		timestamp(&sim->start) - (int)(philo->sim->num_philo * 0.2), \
+		philo->id, DEAD);
+	pthread_mutex_unlock(&sim->print_mutex);
 }
 
 void	monitor(t_sim *sim, t_philo *philo)
@@ -35,6 +28,8 @@ void	monitor(t_sim *sim, t_philo *philo)
 	int	i;
 	int	philos_ate;
 
+	while (timestamp(&sim->start) < (int)(philo->sim->num_philo * 0.2) + 5)
+		usleep(100);
 	while (1)
 	{
 		i = 0;
@@ -44,10 +39,7 @@ void	monitor(t_sim *sim, t_philo *philo)
 			if (get_meals(&philo[i]) != sim->num_meals && \
 				get_last_meal(&philo[i]) >= sim->time_to_die)
 			{
-				pthread_mutex_lock(&sim->print_mutex);
-				set_simstate(sim, 0);
-				printf("%d %d %s\n", timestamp(&sim->start), philo[i].id, DEAD);
-				pthread_mutex_unlock(&sim->print_mutex);
+				kill_philo(sim, &philo[i]);
 				return ;
 			}
 			if (get_meals(&philo[i]) == sim->num_meals)
@@ -97,7 +89,6 @@ void	run_sim(t_sim *sim, t_philo *philos)
 	i = 0;
 	gettimeofday(&sim->start, NULL);
 	set_simstate(sim, 1);
-	usleep(1000);
 	monitor(sim, philos);
 	i = 0;
 	while (i < sim->num_philo)

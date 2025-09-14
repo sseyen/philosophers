@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 12:07:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/08/31 21:48:04 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/09/13 12:58:12 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	eat(t_philo *philo)
 		pthread_mutex_lock(philo->left_fork);
 	print_status(philo->sim, &philo->sim->start, philo->id, FORK_TAKEN);
 	print_status(philo->sim, &philo->sim->start, philo->id, EATING);
-	act(philo->sim->time_to_eat);
 	set_last_meal(philo);
+	act(philo->sim->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 }
@@ -36,11 +36,12 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (!get_simstate(philo->sim))
-		;
+	while (timestamp(&philo->sim->start) \
+		< (int)(philo->sim->num_philo * 0.2) + 1)
+		usleep(10);
 	set_last_meal(philo);
 	if (philo->id % 2 != 0)
-		usleep(100);
+		usleep(1000);
 	while (philo->meals != philo->sim->num_meals)
 	{
 		eat(philo);
