@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:37:03 by alisseye          #+#    #+#             */
-/*   Updated: 2025/08/31 21:33:00 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:47:03 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_sim
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				num_meals;
+	int				delay;
 }	t_sim;
 
 typedef struct s_philo

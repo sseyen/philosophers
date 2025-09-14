@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:59 by alisseye          #+#    #+#             */
-/*   Updated: 2025/09/13 13:29:41 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:47:41 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	act(int ms)
 
 	gettimeofday(&now, NULL);
 	while (timestamp(&now) < ms)
-		usleep(100);
+		usleep(10);
 }
 
 int	timestamp(struct timeval *start)
@@ -57,7 +57,6 @@ void	print_status(t_sim *sim, struct timeval *time, int id, char *status)
 		pthread_mutex_unlock(&sim->print_mutex);
 		return ;
 	}
-	printf("%d %d %s\n", \
-		timestamp(time) - (int)(sim->num_philo * 0.2), id, status);
+	printf("%d %d %s\n", timestamp(time) - sim->delay, id, status);
 	pthread_mutex_unlock(&sim->print_mutex);
 }

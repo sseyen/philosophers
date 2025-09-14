@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 12:07:57 by alisseye          #+#    #+#             */
-/*   Updated: 2025/09/14 22:31:10 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:50:10 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (timestamp(&philo->sim->start) \
-		< (int)(philo->sim->num_philo * 0.2) + 1)
+	while (timestamp(&philo->sim->start) < philo->sim->delay + 1)
 		usleep(10);
 	set_last_meal(philo);
 	if (philo->id % 2 != 0)

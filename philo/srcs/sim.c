@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:20:42 by alisseye          #+#    #+#             */
-/*   Updated: 2025/09/13 13:29:25 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:48:45 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	run_sim(t_sim *sim, t_philo *philos)
 	int	i;
 
 	i = 0;
+	sim->delay = (int)(sim->num_philo * 0.2);
 	while (i < sim->num_philo)
 	{
 		pthread_create(&philos[i].thread, NULL, &philo_routine, &philos[i]);
