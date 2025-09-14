@@ -6,11 +6,18 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:37:10 by alisseye          #+#    #+#             */
-/*   Updated: 2025/08/31 21:27:14 by alisseye         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:28:12 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	one_philo(t_sim *sim)
+{
+	printf("0 1 %s\n", FORK_TAKEN);
+	usleep(sim->time_to_die * 1000);
+	printf("%d 1 %s\n", sim->time_to_die, DEAD);
+}
 
 int	main(int argc, char **argv)
 {
@@ -20,6 +27,8 @@ int	main(int argc, char **argv)
 
 	if (!parse_args(argc, argv, &sim))
 		return (1);
+	if (sim.num_philo == 1)
+		return (one_philo(&sim), 0);
 	forks = init_forks(&sim);
 	if (!forks)
 		return (1);
