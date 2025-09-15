@@ -28,7 +28,7 @@ void	monitor(t_sim *sim, t_philo *philo)
 	int	i;
 	int	philos_ate;
 
-	while (timestamp(&sim->start) < sim->delay + 10)
+	while (timestamp(&sim->start) < sim->time_to_die - 2)
 		usleep(100);
 	while (1)
 	{

@@ -14,10 +14,20 @@
 
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left_fork);
-	print_status(philo->sim, &philo->sim->start, philo->id, FORK_TAKEN);
-	pthread_mutex_lock(philo->right_fork);
-	print_status(philo->sim, &philo->sim->start, philo->id, FORK_TAKEN);
+	if (philo->id % 2 != 0)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_status(philo->sim, &philo->sim->start, philo->id, FORK_TAKEN);
+		pthread_mutex_lock(philo->right_fork);
+		print_status(philo->sim, &philo->sim->start, philo->id, FORK_TAKEN);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->right_fork);
+		print_status(philo->sim, &philo->sim->start, philo->id, FORK_TAKEN);
+		pthread_mutex_lock(philo->left_fork);
+		print_status(philo->sim, &philo->sim->start, philo->id, FORK_TAKEN);
+	}
 	print_status(philo->sim, &philo->sim->start, philo->id, EATING);
 	set_last_meal(philo);
 	act(philo->sim->time_to_eat);
@@ -33,8 +43,8 @@ void	*philo_routine(void *arg)
 	while (timestamp(&philo->sim->start) < philo->sim->delay + 1)
 		usleep(10);
 	set_last_meal(philo);
-	if (philo->id % 2 != 0)
-		usleep(1000);
+	if (philo->id % 2 == 0)
+		act(philo->sim->time_to_eat - 2);
 	while (philo->meals != philo->sim->num_meals)
 	{
 		eat(philo);
