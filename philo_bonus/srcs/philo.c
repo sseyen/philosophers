@@ -32,9 +32,9 @@ static void	eat(t_philo *philo)
 {
 	sem_wait(philo->sim->forks_sem);
 	sem_wait(philo->sim->forks_sem);
-	sprint(philo->sim, "has taken a fork", \
+	sprint(philo->sim, "has taken a fork",
 		timestamp(&philo->sim->start_time) - philo->sim->num_philo, philo->id);
-	sprint(philo->sim, "is eating", \
+	sprint(philo->sim, "is eating",
 		timestamp(&philo->sim->start_time) - philo->sim->num_philo, philo->id);
 	act(philo->sim->time_to_eat);
 	sem_wait(philo->sim->meal_sem);
@@ -52,13 +52,13 @@ static void	philo_routine(t_philo *philo, t_sim *sim)
 		increase_meals(philo);
 		if (philo->meals == sim->num_meals)
 			break ;
-		sprint(sim, "is sleeping", \
-			timestamp(&philo->sim->start_time) - \
-			philo->sim->num_philo, philo->id);
+		sprint(sim, "is sleeping",
+			timestamp(&philo->sim->start_time) - philo->sim->num_philo,
+			philo->id);
 		act(philo->sim->time_to_sleep);
-		sprint(sim, "is thinking", \
-			timestamp(&philo->sim->start_time) - \
-			philo->sim->num_philo, philo->id);
+		sprint(sim, "is thinking",
+			timestamp(&philo->sim->start_time) - philo->sim->num_philo,
+			philo->id);
 	}
 }
 

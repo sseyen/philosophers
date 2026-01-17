@@ -18,8 +18,8 @@ int	timestamp(struct timeval *start)
 	int				ms;
 
 	gettimeofday(&now, NULL);
-	ms = ((now.tv_sec - start->tv_sec) * 1000) + \
-		((now.tv_usec - start->tv_usec) / 1000);
+	ms = ((now.tv_sec - start->tv_sec) * 1000)
+		+ ((now.tv_usec - start->tv_usec) / 1000);
 	return (ms);
 }
 

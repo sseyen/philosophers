@@ -42,7 +42,7 @@ static void	kill_all(t_sim *sim, t_philo *philos, pid_t pid)
 			id = i + 1;
 		i++;
 	}
-	printf("%d %d died\n", \
+	printf("%d %d died\n",
 		timestamp(&sim->start_time) - sim->num_philo, id);
 }
 
