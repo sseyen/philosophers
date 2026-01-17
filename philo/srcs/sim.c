@@ -17,9 +17,10 @@ static void	kill_philo(t_sim *sim, t_philo *philo)
 	usleep(100);
 	pthread_mutex_lock(&sim->print_mutex);
 	set_simstate(sim, 0);
-	printf("%d %d %s\n", \
-		timestamp(&sim->start) - sim->delay, \
-		philo->id, DEAD);
+	printf("%d %d %s\n",
+		timestamp(&sim->start) - sim->delay,
+		philo->id,
+		DEAD);
 	pthread_mutex_unlock(&sim->print_mutex);
 }
 

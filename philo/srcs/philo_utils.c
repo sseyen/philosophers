@@ -19,8 +19,8 @@ int	get_last_meal(t_philo *philo)
 
 	pthread_mutex_lock(&philo->meal_mutex);
 	gettimeofday(&now, NULL);
-	time = (now.tv_sec - philo->last_meal.tv_sec) * 1000 + \
-		(now.tv_usec - philo->last_meal.tv_usec) / 1000;
+	time = (now.tv_sec - philo->last_meal.tv_sec) * 1000
+		+ (now.tv_usec - philo->last_meal.tv_usec) / 1000;
 	pthread_mutex_unlock(&philo->meal_mutex);
 	return (time);
 }

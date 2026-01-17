@@ -43,8 +43,8 @@ int	timestamp(struct timeval *start)
 	return (elapsed_us(start) / 1000);
 }
 
-void	print_status(t_sim *sim, struct timeval *time, int id, \
-					char *status)
+void	print_status(t_sim *sim, struct timeval *time, int id,
+		char *status)
 {
 	int	now_ms;
 

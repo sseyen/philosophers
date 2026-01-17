@@ -65,7 +65,7 @@ t_philo				*init_philos(t_sim *sim, pthread_mutex_t *forks);
 void				set_simstate(t_sim *sim, int state);
 int					get_simstate(t_sim *sim);
 void				run_sim(t_sim *sim, t_philo *philos);
-void				exit_sim(t_sim *sim, pthread_mutex_t *forks, \
+void				exit_sim(t_sim *sim, pthread_mutex_t *forks,\
 					t_philo *philos);
 
 // Philo
@@ -81,7 +81,7 @@ int					set_last_meal(t_philo *philo);
 // Utils
 long long			elapsed_us(struct timeval *start);
 int					timestamp(struct timeval *start);
-void				print_status(t_sim *sim, struct timeval *time, \
+void				print_status(t_sim *sim, struct timeval *time,\
 					int id, char *status);
 
 #endif
