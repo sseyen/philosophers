@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:37:03 by alisseye          #+#    #+#             */
-/*   Updated: 2025/09/14 22:47:03 by alisseye         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:26:35 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct s_sim
 	pthread_mutex_t	state_mutex;
 	int				state;
 	pthread_mutex_t	print_mutex;
+	int				state_mutex_ready;
+	int				print_mutex_ready;
 	int				num_philo;
 	int				time_to_die;
 	int				time_to_eat;
@@ -67,6 +69,7 @@ void				exit_sim(t_sim *sim, pthread_mutex_t *forks, \
 					t_philo *philos);
 
 // Philo
+void				act(t_sim *sim, int ms);
 void				*philo_routine(void *arg);
 
 // Utils philo
@@ -76,7 +79,7 @@ int					get_last_meal(t_philo *philo);
 int					set_last_meal(t_philo *philo);
 
 // Utils
-void				act(int ms);
+long long			elapsed_us(struct timeval *start);
 int					timestamp(struct timeval *start);
 void				print_status(t_sim *sim, struct timeval *time, \
 					int id, char *status);

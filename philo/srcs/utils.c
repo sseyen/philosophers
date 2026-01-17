@@ -6,7 +6,7 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:45:59 by alisseye          #+#    #+#             */
-/*   Updated: 2025/09/14 22:47:41 by alisseye         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:54:20 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,34 +29,32 @@ int	get_simstate(t_sim *sim)
 	return (state);
 }
 
-void	act(int ms)
+long long	elapsed_us(struct timeval *start)
 {
 	struct timeval	now;
 
 	gettimeofday(&now, NULL);
-	while (timestamp(&now) < ms)
-		usleep(10);
+	return (((now.tv_sec - start->tv_sec) * 1000000)
+		+ (now.tv_usec - start->tv_usec));
 }
 
 int	timestamp(struct timeval *start)
 {
-	struct timeval	now;
-	int				ms;
-
-	gettimeofday(&now, NULL);
-	ms = ((now.tv_sec - start->tv_sec) * 1000) + \
-		((now.tv_usec - start->tv_usec) / 1000);
-	return (ms);
+	return (elapsed_us(start) / 1000);
 }
 
-void	print_status(t_sim *sim, struct timeval *time, int id, char *status)
+void	print_status(t_sim *sim, struct timeval *time, int id, \
+					char *status)
 {
+	int	now_ms;
+
 	pthread_mutex_lock(&sim->print_mutex);
 	if (get_simstate(sim) == 0)
 	{
 		pthread_mutex_unlock(&sim->print_mutex);
 		return ;
 	}
-	printf("%d %d %s\n", timestamp(time) - sim->delay, id, status);
+	now_ms = timestamp(time) - sim->delay;
+	printf("%d %d %s\n", now_ms, id, status);
 	pthread_mutex_unlock(&sim->print_mutex);
 }

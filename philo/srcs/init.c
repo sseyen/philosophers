@@ -6,11 +6,24 @@
 /*   By: alisseye <alisseye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:07:52 by alisseye          #+#    #+#             */
-/*   Updated: 2025/08/31 21:31:15 by alisseye         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:23:45 by alisseye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	setup_philo(t_philo *philo, pthread_mutex_t *forks, t_sim *sim,
+			int idx)
+{
+	philo->id = idx + 1;
+	philo->meals = 0;
+	philo->left_fork = &forks[idx];
+	if (philo->id == 1)
+		philo->right_fork = &forks[sim->num_philo - 1];
+	else
+		philo->right_fork = &forks[idx - 1];
+	philo->sim = sim;
+}
 
 int	init_state_mutexes(pthread_mutex_t *forks, t_sim *sim)
 {
@@ -79,17 +92,13 @@ t_philo	*init_philos(t_sim *sim, pthread_mutex_t *forks)
 	i = 0;
 	while (i < sim->num_philo)
 	{
-		philos[i].id = i + 1;
-		philos[i].meals = 0;
-		philos[i].left_fork = &forks[i];
-		if (philos[i].id == 1)
-			philos[i].right_fork = &forks[sim->num_philo - 1];
-		else
-			philos[i].right_fork = &forks[i - 1];
-		philos[i].sim = sim;
+		setup_philo(&philos[i], forks, sim, i);
 		i++;
 	}
 	if (!init_meal_mutexes(philos, sim))
 		return (printf("Error: failed to init meal mutexes\n"), NULL);
+	i = 0;
+	while (i < sim->num_philo)
+		set_last_meal(&philos[i++]);
 	return (philos);
 }
